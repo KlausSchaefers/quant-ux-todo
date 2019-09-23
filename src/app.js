@@ -1,8 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import sqlite3 from 'sqlite3'
-import Events from './Events'
-
+import Todo from './Todo'
+import Files from './Files'
+const fileUpload = require('express-fileupload');
+var cors = require('cors')
 /**
 * Create express instance
 */
@@ -12,15 +13,13 @@ const app = express();
  * Configure express to use budy parser, so data is already transformed
  * to JSON and can be used as the "request.body" property
  */
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/**
- * Create data base which runs for now in memory, We can also use a persitatnt one, by
- * passing a file name, e.g 
- * let db = new sqlite3.Database('./db/test.db', sqlite3.OPEN_READWRITE);
- */
-let db = new sqlite3.Database(':memory:'); 
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
 /**
  * Have a shutdown listener to shut down the database connection. This code
@@ -31,41 +30,45 @@ process.on('SIGINT', () => {
 });
 
 
-/**
- * Create events repository
- */
-let eventsRepository = new Events(db)
-
 
 /**
  * Create the endpoints
  */
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.get('/hello/:name', function (req, res) {
-  res.send(`Hello ${req.params.name}`)
-})
+app.get('/', (req, res) => res.send('Quant-UX-TODO v1.0'))
 
 /**
  * The endpoints for the event API delete gate to the repository. 
  */
-app.get('/events', function (req, res) {
-  eventsRepository.findAll().then(rows => {
-    res.send(rows)
-  })
+app.get('/todo', function (req, res) {
+  let all = Todo.findAll()
+  res.send(all)
 })
 
-app.post('/events', function (req, res) {
+app.post('/todo', function (req, res) {
   /**
    * We read the body from the request and pass the values to the repository
    * class
    */
-  let event = req.body
-  eventsRepository.create(event.device, event.type, event.value).then(id => {
-    res.send({id: id})
-  })
+  let todo = req.body
+  console.debug('post', todo)
+  Todo.create(todo.name, todo.description)
+  let all = Todo.findAll()
+  res.send(all)
 })
 
+app.post('/files', function (req, res) {
+  /**
+   * We read the body from the request and pass the values to the repository
+   * class
+   */
+  let files = req.files
+  for (let key in files) {
+    let file = files[key]
+    Files.create(file.name, file.size)
+  }
+  let all = Files.findAll()
+  res.send(all)
+})
 
 /** 
  * Export the app via commonJS exports
