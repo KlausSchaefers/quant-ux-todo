@@ -1,0 +1,68 @@
+{
+  "name": "express-mongodb-boilerplate",
+  "version": "1.0.0",
+  "description": "Express Mongodb (es6) Boilerplate",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon src/index.js --exec babel-node",
+    "build": "NODE_ENV=production npm run test && npm run clean:dist && babel src -d dist",
+    "clean:dist": "shx rm -rf ./dist",
+    "serve": "NODE_ENV=production node dist/index.js",
+    "test": "NODE_ENV=test mocha --compilers js:@babel/register --require @babel/polyfill --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KlausSchaefers/feup-node-lecture"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KlausSchaefers/feup-node-lecture"
+  },
+  "homepage": "https://github.com/KlausSchaefers/feup-node-lecture",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "http-status": "^1.0.1",
+    "joi": "^13.1.1",
+    "lodash": "^4.17.4",
+    "morgan": "^1.9.0",
+    "sqlite3": "^4.0.6"
+  },
+  "keywords": [
+    "Node.js",
+    "Expressjs",
+    "node",
+    "express",
+    "es6"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/plugin-proposal-function-sent": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-regenerator": "^7.3.4",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "jest": "^24.1.0",
+    "nodemon": "^1.14.11",
+    "shx": "^0.2.2"
+  }
+}
